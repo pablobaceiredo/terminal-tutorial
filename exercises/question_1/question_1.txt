@@ -1,0 +1,1 @@
+What command do we use to know the directory where we are at the moment?

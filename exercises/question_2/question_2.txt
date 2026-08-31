@@ -1,0 +1,6 @@
+No question here! You'll find the second word in the directory called 'answer_2', after listing its contents.
+However, there is a slight problem: part of the contents were moved to the trash!
+To solve this problem, just copy them back to the 'answer_2' directory. You will find them in the 'exercises/trash/answer_2_missing' directory.
+Once you do it, you will find the answer by listing the contents of the 'answer_2' directory. However, it is important that you sort them chronologically - you can do that adding the flag '-t' after 'ls'.
+
+Hint: The missing contents that you need to copy are directories. This means that you will need to pay attention when copying...

@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Pablo Baceiredo Macho">
+
+<title>Working from the terminal 101</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="terminal_tutorial_files/libs/clipboard/clipboard.min.js"></script>
+<script src="terminal_tutorial_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="terminal_tutorial_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="terminal_tutorial_files/libs/quarto-html/popper.min.js"></script>
+<script src="terminal_tutorial_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="terminal_tutorial_files/libs/quarto-html/anchor.min.js"></script>
+<link href="terminal_tutorial_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="terminal_tutorial_files/libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="terminal_tutorial_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="terminal_tutorial_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="terminal_tutorial_files/libs/bootstrap/bootstrap-769b268fb290e116fe386cf5612ac759.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#what-is-the-terminal-and-why-do-we-use-it" id="toc-what-is-the-terminal-and-why-do-we-use-it" class="nav-link active" data-scroll-target="#what-is-the-terminal-and-why-do-we-use-it">What is the terminal and why do we use it</a></li>
+  <li><a href="#how-to-open-the-terminal" id="toc-how-to-open-the-terminal" class="nav-link" data-scroll-target="#how-to-open-the-terminal">How to open the terminal</a></li>
+  <li><a href="#how-to-navigate-the-file-system" id="toc-how-to-navigate-the-file-system" class="nav-link" data-scroll-target="#how-to-navigate-the-file-system">How to navigate the file system</a>
+  <ul class="collapse">
+  <li><a href="#check-the-current-directory" id="toc-check-the-current-directory" class="nav-link" data-scroll-target="#check-the-current-directory">Check the current directory</a></li>
+  <li><a href="#find-what-is-inside-the-directory" id="toc-find-what-is-inside-the-directory" class="nav-link" data-scroll-target="#find-what-is-inside-the-directory">Find what is inside the directory</a></li>
+  <li><a href="#move-between-directories" id="toc-move-between-directories" class="nav-link" data-scroll-target="#move-between-directories">Move between directories</a></li>
+  </ul></li>
+  <li><a href="#making-copying-moving-and-deleting-files" id="toc-making-copying-moving-and-deleting-files" class="nav-link" data-scroll-target="#making-copying-moving-and-deleting-files">Making, copying, moving and deleting files</a>
+  <ul class="collapse">
+  <li><a href="#create-a-new-directory" id="toc-create-a-new-directory" class="nav-link" data-scroll-target="#create-a-new-directory">Create a new directory</a></li>
+  <li><a href="#create-a-new-file" id="toc-create-a-new-file" class="nav-link" data-scroll-target="#create-a-new-file">Create a new file</a></li>
+  <li><a href="#moving-and-copying-files" id="toc-moving-and-copying-files" class="nav-link" data-scroll-target="#moving-and-copying-files">Moving and copying files</a></li>
+  <li><a href="#removing-files-and-directories" id="toc-removing-files-and-directories" class="nav-link" data-scroll-target="#removing-files-and-directories">Removing files and directories</a></li>
+  </ul></li>
+  <li><a href="#inspecting-files" id="toc-inspecting-files" class="nav-link" data-scroll-target="#inspecting-files">Inspecting files</a>
+  <ul class="collapse">
+  <li><a href="#displaying-the-content-of-a-file" id="toc-displaying-the-content-of-a-file" class="nav-link" data-scroll-target="#displaying-the-content-of-a-file">Displaying the content of a file</a></li>
+  <li><a href="#finding-matches-and-counting-lines-words-and-characters" id="toc-finding-matches-and-counting-lines-words-and-characters" class="nav-link" data-scroll-target="#finding-matches-and-counting-lines-words-and-characters">Finding matches and counting lines, words and characters</a></li>
+  </ul></li>
+  <li><a href="#writing-and-executing-scripts" id="toc-writing-and-executing-scripts" class="nav-link" data-scroll-target="#writing-and-executing-scripts">Writing and executing scripts</a>
+  <ul class="collapse">
+  <li><a href="#bash-scripts" id="toc-bash-scripts" class="nav-link" data-scroll-target="#bash-scripts">Bash scripts</a></li>
+  <li><a href="#python-scripts" id="toc-python-scripts" class="nav-link" data-scroll-target="#python-scripts">Python scripts</a></li>
+  </ul></li>
+  <li><a href="#the-remote-cluster" id="toc-the-remote-cluster" class="nav-link" data-scroll-target="#the-remote-cluster">The remote cluster</a>
+  <ul class="collapse">
+  <li><a href="#connecting-to-the-cluster" id="toc-connecting-to-the-cluster" class="nav-link" data-scroll-target="#connecting-to-the-cluster">Connecting to the cluster</a></li>
+  <li><a href="#submitting-jobs" id="toc-submitting-jobs" class="nav-link" data-scroll-target="#submitting-jobs">Submitting jobs</a></li>
+  <li><a href="#transfering-files-to-and-from-the-cluster" id="toc-transfering-files-to-and-from-the-cluster" class="nav-link" data-scroll-target="#transfering-files-to-and-from-the-cluster">Transfering files to and from the cluster</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#appendix-1-access-rights" id="toc-appendix-1-access-rights" class="nav-link" data-scroll-target="#appendix-1-access-rights">Appendix 1: Access rights</a></li>
+  <li><a href="#appendix-2-conda-environments" id="toc-appendix-2-conda-environments" class="nav-link" data-scroll-target="#appendix-2-conda-environments">Appendix 2: Conda environments</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Working from the terminal 101</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Pablo Baceiredo Macho </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this tutorial, we will learn how to use the terminal to interact with the computer. We will cover the following topics:</p>
+<ol type="1">
+<li><a href="#what-is-the-terminal-and-why-do-we-use-it">What is the terminal and why do we use it</a></li>
+<li><a href="#how-to-open-the-terminal">How to open the terminal</a></li>
+<li><a href="#how-to-navigate-the-file-system">How to navigate the file system</a></li>
+<li><a href="#making-copying-moving-and-deleting-files">Making, copying, moving and deleting files</a></li>
+<li><a href="#inspecting-files">Inspecting files</a></li>
+<li><a href="#writing-and-executing-scripts">Writing and executing scripts</a></li>
+<li><a href="#the-remote-cluster">The remote cluster</a></li>
+</ol>
+<p>From my experience (and the experience of others), the best way to learn how to work from the terminal is to learn by doing. Therefore, I strongly recommend that you follow the practicals in the tutorial.</p>
+<p><strong>DISCLAIMER:</strong> This is an absolute-beginners tutorial, so only the basics will be covered. If you want to do more sophisticated stuff, I recommend using LLMs. They are quite good at it.</p>
+<section id="what-is-the-terminal-and-why-do-we-use-it" class="level1">
+<h1>What is the terminal and why do we use it</h1>
+<p>Normally, when we use a computer, a tablet or a smartphone, we touch or click on icons to open files or applications and we use a mouse or a touch screen to navigate through the system. This is called a <strong><em>graphical user interface (GUI)</em></strong> — <em>graphical</em>, because it uses visual elements (e.g.&nbsp;icons) and <em>interface</em>, because it serves as an intermediate between the user and the operating system (OS), i.e.&nbsp;the software that manages the computer’s hardware and applications.</p>
+<p>There is, however, another way to interact with the computer: the <strong><em>command line interface (CLI)</em></strong>. The CLI is an interface that is based on <em>text commands</em>. This means that, instead of clicking on icons, we type commands to tell the computer what to do. We type these commands in the <strong><em>terminal</em></strong>. The terminal is a program that provides access to the command line interface (CLI).</p>
+<p>But, if the GUI is so easy and intuitive, why would we want to use the CLI? Although it is true that the GUI is more user-friendly and that quick actions (e.g., opening a file or navigating through directories), there are several reasons to use the CLI:</p>
+<ul>
+<li><strong>Automation</strong>: The CLI allows us to automate repetitive tasks by writing scripts. This is especially useful when we have to process large amounts of data or perform complex operations. For example, if we have to rename hundreds of files, we can write a script that does it for us in a few seconds, instead of doing it manually one by one.</li>
+<li><strong>Remote access</strong>: The CLI allows us to access and control <em>remote computers</em>, such as servers or clusters, through a network connection. This is useful when we want to run programs or analyze data on a powerful machine that is not physically accessible to us. This will be especially relevant for us, because we will be using the ILF cluster to run our analyses.</li>
+<li><strong>Efficiency</strong>: The CLI is often faster and more efficient than the GUI, especially for advanced users who are familiar with the commands. For example, we can perform complex operations with a single command, instead of navigating through multiple menus and windows.</li>
+<li><strong>Reproducibility</strong>: We can save the exact commands we typed into a script or a text file. This is important if someone else wants to do the same analysis in the future, or even if we ourselves want to repeat it — you’ll be amazed how easy it is to forget the steps you made in the past! By saving the commands, we can ensure that the analysis can be reproduced exactly as it was done before.</li>
+</ul>
+</section>
+<section id="how-to-open-the-terminal" class="level1">
+<h1>How to open the terminal</h1>
+<p>Enough with the talking! Let’s open the terminal and start using it. The way to open the terminal depends on the operating system (OS) we are using. The most common OSs are Windows, macOS and Linux.</p>
+<ul>
+<li><strong>Windows</strong>: The terminal is called <em>Command Prompt</em> or <em>PowerShell</em>. To open it, we can search for “cmd” or “PowerShell” in the Start menu and click on the corresponding application. Alternatively, we can use the keyboard shortcut <code>Win + R</code>, type “cmd” or “powershell” and press Enter.</li>
+<li><strong>macOS</strong>: The terminal is called <em>Terminal</em>. To open it, we can search for “Terminal” in Spotlight (the magnifying glass icon in the top right corner) and click on the corresponding application. Alternatively, we can use the keyboard shortcut <code>Cmd + Space</code>, type “Terminal” and press Enter.</li>
+<li><strong>Linux</strong>: The terminal is called <em>Terminal</em> or <em>Console</em>. To open it, we can search for “Terminal” in the application menu and click on the corresponding application. Alternatively, we can use the keyboard shortcut <code>Ctrl + Alt + T</code>.</li>
+</ul>
+<p>In my case (macOS), when I open it, I see something like this:</p>
+<p><img src="images/opening.png" class="img-fluid"></p>
+<p>You should be able to write commands after the <code>$</code> symbol. The <code>$</code> symbol is called the <em>prompt</em> and it indicates that the terminal is ready to receive commands. The prompt may look different depending on the OS, the shell (the program that interprets the commands) and the configuration, but it usually ends with a <code>$</code>, <code>&gt;</code>, or <code>#</code> symbol.</p>
+</section>
+<section id="how-to-navigate-the-file-system" class="level1">
+<h1>How to navigate the file system</h1>
+<p>When you open the terminal, you land somewhere, i.e.&nbsp;in a specific <em>directory</em> (or <em>folder</em>). A directory is a container that can hold files and even other directories. The directory you land in when you open the terminal is called your <em>home directory</em>, and is usually represented by a tilde (<code>~</code>). You can see it just before the prompt <code>$</code>.</p>
+<p>Of course, you can move from one directory to another, so that you can access the files and run scripts elsewhere in your file system. Before we explain how to do this, we need to know the how the directories are organized in the file system.</p>
+<p>The file system is organized in a hierarchical structure, like a tree.</p>
+<ul>
+<li>The top of the tree is called the <em>root directory</em> and it is represented by a <code>/</code> symbol.</li>
+<li>From the root directory, we can have several directories, which can contain other directories, and so on. For example, within the root directory we can have a directory called <code>Users</code>, which contains a directory called <code>me</code>, which contains a directory called <code>Documents</code>, which contains a file called <code>file.txt</code>.</li>
+<li>To indicate where a file is located, we use the <em>path</em> to that file. The path to the file above would be <code>/Users/me/Documents/file.txt</code>.</li>
+<li>There are 2 important wildcards that we can use to navigate the file system: <code>.</code> and <code>..</code>.
+<ul>
+<li>The <code>.</code> wildcard refers to the current directory. Therefore, if we are in the <code>/Users/me/Documents</code> directory, we can use <code>.</code> to refer to the same directory (and so save some typing, because paths can get very long).</li>
+<li>The <code>..</code> wildcard refers to the parent directory. The parent directory is the directory that contains the current directory, i.e.&nbsp;the directory just above it. For example, if we are in the <code>/Users/me/Documents</code> directory, we can use <code>..</code> to refer to the <code>/Users/me</code> directory, because <code>..</code> means “go up one level”.</li>
+</ul></li>
+</ul>
+<p><img src="images/directories.png" class="img-fluid"></p>
+<section id="check-the-current-directory" class="level2">
+<h2 class="anchored" data-anchor-id="check-the-current-directory">Check the current directory</h2>
+<p>In the terminal, you can <strong>check which directory you are in</strong> by typing the command <code>pwd</code> (which stands for <em>print working directory</em>) and pressing Enter.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For example, in my case, the output is:</p>
+<p><img src="images/pwd.png" class="img-fluid"></p>
+</section>
+<section id="find-what-is-inside-the-directory" class="level2">
+<h2 class="anchored" data-anchor-id="find-what-is-inside-the-directory">Find what is inside the directory</h2>
+<p>We can <strong>find what is inside our directory</strong>. We can do this by typing the command <code>ls</code> (which stands for <em>list</em>) and pressing Enter.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For example, in my case, the output is:</p>
+<p><img src="images/ls.png" class="img-fluid"></p>
+<p>As you can see, there are several other directories inside my home directory (colored in purple <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>). You might have noticed that the output of <code>ls</code> is not very informative, because it only shows the names of the files and directories. To modify the behaviour of the <code>ls</code> command we can use <em>options</em>. For example, if we want to order them by modification time, we use the option <code>-t</code>, if we want to show the long listing format (showing size, access rigths, owner, etc. — more on that later), we can use the option <code>-l</code>, and so on and so forth.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-t</span>   <span class="co"># order by modification time</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span>   <span class="co"># long listing format</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lt</span>  <span class="co"># we can even combine them!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you want to look for a particular file or directory (e.g.&nbsp;if you want to check if a file called <code>my_file.txt</code> is in the current directory), you can pass the file or directory name as an argument to the <code>ls</code> command. For example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> my_file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you want to know more about the different <code>ls</code> options, take a look at <a href="https://www.w3schools.com/bash/bash_ls.php">this website</a>.</p>
+<p>So now, what if we want to move to one of those directories?</p>
+</section>
+<section id="move-between-directories" class="level2">
+<h2 class="anchored" data-anchor-id="move-between-directories">Move between directories</h2>
+<p>We can <strong>move between directories</strong> using the <code>cd</code> command (which stands for <em>change directory</em>), followed by the path we want to move to. You can use either the <em>absolute path</em> (starting from the root directory) or the <em>relative path</em> (starting from the current directory).</p>
+<p>For example, if we want to move to the <code>Documents</code> directory, we can use either of the following commands:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /Users/me/Documents  <span class="co"># absolute path</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> Documents            <span class="co"># relative path</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Both are equally valid, but the relative path is shorter and easier to type.</p>
+<p>So, for example, let’s move to the <code>Documents</code> directory and check what is inside it:</p>
+<p><img src="images/cd_pwd_ls.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="making-copying-moving-and-deleting-files" class="level1">
+<h1>Making, copying, moving and deleting files</h1>
+<p>Moving is great and all, but we also want to create files and directories, copy them and move them around. Let’s see how to do that.</p>
+<section id="create-a-new-directory" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-new-directory">Create a new directory</h2>
+<p>To create a new directory within the working directory, we can use the <code>mkdir</code> command (which stands for <em>make directory</em>), followed by the name of the new directory. For example, if we want to create a new directory called <code>my_dir</code>, we can use the following command:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> my_dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Let’s create it and check that it is there:</p>
+<p><img src="images/mkdir.png" class="img-fluid"></p>
+<p>As we expected, the new directory <code>my_dir</code> is empty, because there is no output to <code>ls</code>.</p>
+</section>
+<section id="create-a-new-file" class="level2">
+<h2 class="anchored" data-anchor-id="create-a-new-file">Create a new file</h2>
+<p>We can create files using different commands. One of them is the <code>nano</code> command, which opens a text editor in the terminal. We can use it to create a new file and write some text in it. For example, if we want to create a new file called <code>my_file.txt</code>, we can use the following command:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nano</span> my_file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will open the <code>nano</code> text editor, where we can write some text. Once we are done, we can save the file by pressing <code>Ctrl + O</code>, then press Enter to confirm the file name, and finally exit the editor by pressing <code>Ctrl + X</code>. Let’s try it:</p>
+<p><img src="images/nano1.png" class="img-fluid"> <img src="images/nano2.png" class="img-fluid"> <img src="images/nano3.png" class="img-fluid"></p>
+<p>As you see, we created the file <code>my_file.txt</code>, wrote some text in it, saved it and closed it. Then, we can check that it is there by using the <code>ls</code> command:</p>
+<p><img src="images/nano4.png" class="img-fluid"></p>
+<p>A very widespread alternative to <code>nano</code> is <code>vim</code> (or <code>vi</code>), which is a more powerful text editor, but also more complex to use. You are free to learn how <code>vi</code>/<code>vim</code> works, and we highly recommend using an LLM (like ChatGPT) to help you with that.</p>
+</section>
+<section id="moving-and-copying-files" class="level2">
+<h2 class="anchored" data-anchor-id="moving-and-copying-files">Moving and copying files</h2>
+<p>To copy files, we can use the <code>cp</code> command (which stands for <em>copy</em>), followed by the source file and the destination file. For example, if we want to copy the file <code>my_file.txt</code> to a new file called <code>my_file_copy.txt</code>, we can use the following command:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> my_file.txt my_file_copy.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can also copy files to another directory. For example, if we want to copy the file <code>my_file.txt</code> to the directory <code>my_dir</code>, we can use the following command:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> my_file.txt my_dir/my_file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can also copy directories and their contents using the <code>-r</code> option (which stands for <em>recursive</em>). For example, if we want to copy the directory <code>my_dir</code> and all its contents to a new directory called <code>my_dir_copy</code>, we can use the following command:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> my_dir my_dir_copy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that copying a file to another directory does not remove the original file, it just creates a new copy of it in the destination directory. If we want to move a file (i.e., remove it from the source directory and place it in the destination directory), we can use the <code>mv</code> command (which stands for <em>move</em>), followed by the source file and the destination file. For example, if we want to move the file <code>my_file.txt</code> to the directory <code>my_dir</code>, we can use the following command:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> my_file.txt my_dir/my_file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Once again, you can also move directories and their contents using the <code>mv</code> command. For example, if we want to move the directory <code>my_dir</code> to a new directory called <code>my_dir_moved</code>, we can use the following command:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> my_dir my_dir_moved</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="removing-files-and-directories" class="level2">
+<h2 class="anchored" data-anchor-id="removing-files-and-directories">Removing files and directories</h2>
+<p>Eliminating files and directories is also very easy, but one must be extremely careful. When we remove a file or directory using the terminal, <strong>it is gone <em>forever</em> and there is no way to recover it</strong>. This is different from the GUI, because</p>
+<ul>
+<li>there is <strong>no trash or recycle bin</strong> in the terminal, and</li>
+<li>there is <strong>no confirmation prompt</strong> before deleting a file or directory.</li>
+</ul>
+<p>Therefore, the removing commands should be used with caution. To remove a file, we can use the <code>rm</code> command (which stands for <em>remove</em>), followed by the name of the file. For example, if we want to remove the file <code>my_file.txt</code>, we can use the following command:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> my_file.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And then the file is gone forever. Check the following example: we first create a file called <code>my_file.txt</code>, check that it is there using <code>ls</code>, then we remove it, and finally we check that it is gone:</p>
+<p><img src="images/rm1.png" class="img-fluid"></p>
+<p>There are <strong>3 important options</strong> that we can use with the <code>rm</code> command:</p>
+<ul>
+<li><code>-i</code> (<em>interactive</em>): This option prompts us for confirmation before removing a file. After being asked, we should type <code>y</code> to confirm or <code>n</code> to cancel. For example:</li>
+</ul>
+<p><img src="images/rm_i.png" class="img-fluid"></p>
+<ul>
+<li><code>-r</code> (<em>recursive</em>): If we try to remove a whole directory (and all its contents) using just <code>rm</code>, the system will print a warning. Therefore, if we want to remove a directory and all its contents, we can use the <code>-r</code> option. Note that using the <code>-r</code> option will remove all files and subdirectories within the specified directory, so use it with caution. For example, if we want to remove the directory <code>my_dir</code> and all its contents:</li>
+</ul>
+<p><img src="images/rm_r.png" class="img-fluid"></p>
+<ul>
+<li><code>-f</code> (<em>force</em>): This option forces the removal of files and directories without prompting for confirmation, even if they are locked or protected. This is a very dangerous option, because it will remove everything without asking, so we strongly recommend not using it unless you are absolutely sure of what you are doing.</li>
+</ul>
+<p><strong>WARNING! The nuclear option <code>rm -rf</code>.</strong> When you combine the <code>-r</code> and <code>-f</code> options, you get the <code>rm -rf</code> command, which is a very powerful and dangerous command that can delete entire directories and their contents without any confirmation. This command should be used with extreme caution, because it can easily lead to data loss if used incorrectly. <strong>Especially, never use it with the root directory (<code>/</code>), because it will delete everything in your system and render it unusable.</strong> You wouldn’t be the first to lose their entire operating system by accidentally typing <code>rm -rf /</code> instead of <code>rm -rf *</code>. Therefore, we strongly recommend not using this command unless you are absolutely sure of what you are doing.</p>
+</section>
+</section>
+<section id="inspecting-files" class="level1">
+<h1>Inspecting files</h1>
+<section id="displaying-the-content-of-a-file" class="level2">
+<h2 class="anchored" data-anchor-id="displaying-the-content-of-a-file">Displaying the content of a file</h2>
+<p>When we use <code>nano</code> or <code>vim</code> to create a file, we can also use them to read the contents of a file. However, there are other commands that are more suitable for this task, because they allow us to read files without opening a text editor. The command we use will be different depending on the action we want to perform.</p>
+<ul>
+<li><code>cat</code> (concatenate): This command allows us to read the entire contents of a file and print it to the terminal. It is nice for short files, but do not use it for huge files, because it will print everything at once and you will have to scroll through it (also possibly crashing your terminal).</li>
+<li><code>less</code>: For large files, we can use the <code>less</code> command, which allows us to read the contents of a file one page at a time. We can scroll through the file using the arrow keys or the space bar, and we can exit by pressing <code>q</code>.</li>
+<li><code>head</code> and <code>tail</code>: These commands allow us to read the beginning or end of a file, respectively. For example, <code>head my_file.txt</code> will display the first 10 lines of the file, while <code>tail my_file.txt</code> will display the last 10 lines. You can change the number of lines displayed by using the <code>-n</code> option, e.g.&nbsp;<code>head -n 20 my_file.txt</code> will display the first 20 lines of the file.</li>
+</ul>
+<p>For example, a file called <code>numbers.txt</code> contains the numbers 1 to 20, one per line. Thus, if we use the commands explained above, we get the following outputs:</p>
+<p><code>cat</code> command: <img src="images/cat.png" class="img-fluid"></p>
+<p><code>less</code> command (1) — We press enter and see the output in a new screen: <img src="images/less_1.png" class="img-fluid"></p>
+<p><code>less</code> command (2) — We can scroll through the file using the arrow keys or the space bar. When we are done, we can exit by pressing <code>q</code>: <img src="images/less_2.png" class="img-fluid"></p>
+<p><code>head</code> and <code>tail</code> commands: <img src="images/head_tail.png" class="img-fluid"></p>
+</section>
+<section id="finding-matches-and-counting-lines-words-and-characters" class="level2">
+<h2 class="anchored" data-anchor-id="finding-matches-and-counting-lines-words-and-characters">Finding matches and counting lines, words and characters</h2>
+<p>Sometimes we want to find a specific word, number or string in a file, or count the number of lines, words and characters in a file. If the file is small, we can do it manually with the commands above, sure. However, you will find that it is way easier and more efficient to use specific commands for this.</p>
+<ul>
+<li><code>grep</code>: This command allows us to search for a specific word, number or string in a file. For example, <code>grep "9" numbers.txt</code> will display all the lines that contain the number 9 in the file. We can also use options to modify the behaviour of the command, e.g.&nbsp;<code>-i</code> to ignore case, <code>-n</code> to show line numbers, etc. You are free to ask ChatGPT for more information about the different <code>grep</code> options.</li>
+</ul>
+<p><img src="images/grep.png" class="img-fluid"></p>
+<ul>
+<li><code>wc</code> (<em>word count</em>): This command allows us to count the number of lines, words, and characters in a file. For example, <code>wc my_file.txt</code> will display the number of lines, words, and characters in the file (in that order). You can also use options to count only lines (<code>-l</code>), words (<code>-w</code>), or characters (<code>-c</code>). For example, <code>wc -l my_file.txt</code> will display only the number of lines in the file.</li>
+</ul>
+<p><img src="images/wc.png" class="img-fluid"></p>
+<p><img src="images/wc_2.png" class="img-fluid"></p>
+</section>
+</section>
+<section id="writing-and-executing-scripts" class="level1">
+<h1>Writing and executing scripts</h1>
+<section id="bash-scripts" class="level2">
+<h2 class="anchored" data-anchor-id="bash-scripts">Bash scripts</h2>
+<p>Writing one command at a time is fine for simple tasks, but when we want to perform more complex operations or automate repetitive tasks, it is better to write a script. A script is a file that contains a series of commands that can be executed in sequence. Here, we will focus on <em>bash scripts</em>, which are scripts written for the bash shell (the default shell in most Linux and macOS systems).</p>
+<p>To create a bash script, we can use a text editor (e.g., <code>nano</code> or <code>vim</code>) to create a new file with the <code>.sh</code> extension. The script must:</p>
+<ol type="1">
+<li>Start with a <strong>shebang line</strong> (<code>#!/bin/bash</code>). This line just tells the operating system which interpreter to use to execute the script. If we are using a different language (e.g., Python, R, etc.), we would use a different shebang line (e.g., <code>#!/usr/bin/env python</code> for Python).</li>
+<li>Contain the <strong>commands</strong> we want to execute, <em>one per line</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</li>
+<li><strong>Be made executable</strong> using the <code>chmod</code> command. By default, a new file is not executable, so we need to change its permissions to allow execution. To do so, we just use the <code>chmod</code> command with the <code>+x</code> (<em>add execute</em>) option, followed by the name of the script (more on <code>chmod</code> and access rights in the <a href="#appendix-1-access-rights">appendix</a>).</li>
+</ol>
+<p>For instance, let’s create a simple bash script called <code>my_script.sh</code> that prints the current working directory and lists the files in it. I’ll use <code>vi</code> to create the script, but you can use any text editor you like.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vi</span> my_script.sh   <span class="co"># or 'nano my_script.sh'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This will open the text editor. There, we can write the following lines:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash   # Shebang line: always the first line of a bash script</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># here we include the commands</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Current working directory:"</span>   <span class="co"># 'echo' simply prints to screen whatever is stated next to the command</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span>                                 <span class="co"># returns the current working directory</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"Files and directories in this directory:"</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><img src="images/script1.png" class="img-fluid"></p>
+<p><img src="images/script2.png" class="img-fluid"></p>
+<p>We save it and close the text editor. Feel free to check whether the script file is there!</p>
+<p><img src="images/script3.png" class="img-fluid"></p>
+<p>Now, how do we execute it? Remember that first we need to be able to execute it, or, in technical terms, have <em>execution permission</em>. By default, no new files are ready to be executed because the don’t have execution permission, so we need to change the access rights. We do that with the <code>chmod</code> command followed by <code>+x</code> and the file name, which basically means ‘change file mode to add execution permission to this file.’</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x my_script.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Now, if you list the directory, you’ll see that the file name changed colors! That shows that it has been made executable.</p>
+<p><img src="images/script4.png" class="img-fluid"></p>
+<p><strong>And how do we <em>actually</em> run the script?</strong> To do so, we just type the script file name, with <code>./</code>. Remember that the <code>.</code> means ‘this directory’, so <code>./my_script.sh</code> would just mean ‘in this directory, run <code>my_script.sh</code>.’</p>
+<p><img src="images/script5.png" class="img-fluid"></p>
+<p>Bear in mind that this only works if the script is <em>in the same directory</em> where you are running in it from. If the script is in a different directory, we would need to write the path (absolute or relative) to it. For example, if <code>my_script.sh</code> was in the parent directory (i.e.&nbsp;in the directory just above to ours), we would run it like this:</p>
+<p><img src="images/script6.png" class="img-fluid"></p>
+<p>Or, if it were in the directory <code>~/Documents/dir2</code>, we would run it like this:</p>
+<p><img src="images/script7.png" class="img-fluid"></p>
+<p>Note that, either way, the output (i.e.&nbsp;the current working directory that is printed and the list of items in it) always refers to the directory where the script is being runned from (not the directory where the script lies).</p>
+</section>
+<section id="python-scripts" class="level2">
+<h2 class="anchored" data-anchor-id="python-scripts">Python scripts</h2>
+<p>Similarly to writing and executing bash scripts, one can write and execute scripts in other programming languages. Here, I will explain how to do it in Python, but it is similar in other languages (e.g., R).</p>
+<p>In general, the procedure is the same: we create a file (in this case, with the <code>.py</code> extension), write our code and run it. The most important differences with running bash scripts are:</p>
+<ul>
+<li><strong>The Python shebang</strong>: Because we are using a different language, we need the system to use a different interpreter. Before, we used <code>#!/bin/bash</code>, now we’ll use <code>#!/usr/bin/env python</code>.</li>
+<li><strong>Running the code</strong>: We can run the Python script in 2 ways:
+<ul>
+<li>Explicitly, by typing <code>python my_script.py</code>. This calls Python explictily, letting the system know that it is a Python file. This way we don’t need to change execution permissions. This is the most usual way to do it.</li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> my_script.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Making the file executable (using <code>chmod +x</code>) and then running it directly as before (<code>./my_script.py</code>). The system will know what programming language it is written in thanks to the shebang.</li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x my_script.py   <span class="co"># change permissions</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./my_script.py</span>          <span class="co"># run it</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><strong>Conda environments:</strong> These are especially important when working on a remote cluster (more on that later). A conda environment is simply a self-contained directory that holds a specific version of Python and a specific set of packages (Python tools), separated from the rest of the computer. This is useful because different research projects need different packages and even different versions of the same packages, so it is handy to have them in separate ‘toolboxes’. These toolboxes are the environments. You will find more about the conda environments in the <a href="#appendix-2-conda-environments">appendix</a>.</li>
+</ul>
+</section>
+</section>
+<section id="the-remote-cluster" class="level1">
+<h1>The remote cluster</h1>
+<p>Working in your own computer is great. However, your research will eventually be too large or demanding for your PC. This can happen if your dataset is too massive to fit in your PC’s memory or if a script takes a long time to finish running.</p>
+<p>To solve this problem, we have <strong>remote clusters</strong> (or <em>servers</em>). A remote cluster is simply a computer that is located in a data center or other facility. These clusters are a collection of individual computers, called <em>nodes</em>, that allow us to split large tasks into smaller pieces so that many nodes can work simultaneously and our scripts and jobs can finish way quicker than they would in our PC. This is called <em>high-performance computing</em>, or HPC.</p>
+<p>The brain inside each node can be of 2 different types:</p>
+<ul>
+<li><strong>CPU</strong> (Central Processing Unit): CPUs can handle very complex tasks that might be done in a sequence (i.e.&nbsp;you cannot do step B until step A finishes). However, they normally don’t have a lot of cores, so not many things can be done simultaneously.</li>
+<li><strong>GPU</strong> (Graphics Processing Unit): GPUs cannot perform tasks as complex as those performed by CPUs, but they can perform a lot of tasks at the same time because they contain thousands of cores. Therefore, they are great to do the exact same simple operation to millions of data points simultaneously<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</li>
+</ul>
+<p>We use HPC clusters to do our work for 3 reasons:</p>
+<ul>
+<li><strong>Memory:</strong> Many of our files are larger than what our RAM can handle, so it is impossible to open them in our PCs.</li>
+<li><strong>Time:</strong> Running a molecular simulation in our PC would take ages (I mean it: it would take years). Splitting the calculations across the GPU cores reduces this time to the order of days.</li>
+<li><strong>Parallel computing</strong>: We can run the exact same analysis thousands of times simultaneously, without having to run it one after the next one.</li>
+</ul>
+<p>Here at the Department for Drug Design and Pharmacology we use the <strong>ILF Grid</strong>. You can find more information about it in the <a href="https://biowiki.sund.ku.dk/wiki/Main_Page">ILF Grid Wiki</a> but I will cover the very basics now.</p>
+<section id="connecting-to-the-cluster" class="level2">
+<h2 class="anchored" data-anchor-id="connecting-to-the-cluster">Connecting to the cluster</h2>
+<p>Okay, but how do we access this remote computer?</p>
+<p>To do so, we first need to <strong>connect our VPN</strong>. HPC clusters have expensive hardware and sensitive data, so they are not available in the public internet. The VPN (Virtual Private Network) creates a safe and encrypted connection between your PC and the university internet, letting you access the cluster no matter where you are.</p>
+<p><img src="images/vpn.png" class="img-fluid"></p>
+<p>Once connected to the VPN, we need to log in to the cluster. We do this using <strong>SSH</strong> (Secure Shell), which creates an encrypted tunnel. In particular, to access the ILF Cluster we write:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh</span> abc123@ilfgridgate    <span class="co"># 'abc123' is your KU ID (swedish licence plate)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Then it will ask you to introduce your password. You will notice that nothing will be shown to screen —not even the ’*’— but, don’t worry, your password is being typed.</p>
+<p><img src="images/hpc1.png" class="img-fluid"></p>
+<p>Once accepted, you will have landed in the <strong>login node</strong>. Note that we can know that we are in a remote cluster by reading the part in blue and green before the current directory (yellow). The blue part is the <em>username</em> (it changed to my KU ID) and the part in green is the <em>hostname</em> (changed from my device’s hostname to the ILF Grid hostname)<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p><img src="images/hpc2.png" class="img-fluid"></p>
+</section>
+<section id="submitting-jobs" class="level2">
+<h2 class="anchored" data-anchor-id="submitting-jobs">Submitting jobs</h2>
+<p>The login node is simply the ‘lobby’ where you enter the cluster. You can manage files, navigate directories, edit scripts, check job status… However, <strong>you should <em>never</em> run heavy computations</strong> (e.g.&nbsp;molecular simulations) on the login node. That is a job for the <strong>compute node</strong>.</p>
+<p>The compute node is the powerhouse that executes the heavy jobs. The compute node is protected and cannot be accessed directly. Instead, one can send jobs to run in the compute node using a <em>job scheduler</em>, which allocates access to the computational resources, manages the job queue and executes our scripts. The ILF Grid uses Slurm (though there exist other ones).</p>
+<p>Here I will cover the very basics on how to submit jobs to the compute node using Slurm. You are welcome to ask ChatGPT et al.&nbsp;on how to do it more sophisticatedly.</p>
+<ol type="1">
+<li><strong>Create a batch script.</strong> A batch script is just a regular bash script (with the <code>.sh</code> extension) but it has a particular header. The header is just a set of lines at the very top of the script which contain a set of guidelines on how to run the script (subset and number of nodes being used, number of CPU cores, amount of RAM, etc.).</li>
+<li><strong>Submitting the script.</strong> The batch script is sent to the job scheduler using the <code>sbatch</code> command followed by the file name of the script. A script submitted to run at the compute node is commonly refered to as a <em>job</em>.</li>
+</ol>
+<p>For example, if we want to run the script <code>my_job.sh</code> at the compute node, we would just do the following:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sbatch</span> my_job.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After this, we will get a job ID which will serve us to identify it. You can check the queue of all the jobs being run or pending to be run in the department by writing <code>squeue</code>. If you write <code>squeue -u abc123</code> (where <code>abc123</code> is your KU ID) you can check the progress of your jobs.</p>
+</section>
+<section id="transfering-files-to-and-from-the-cluster" class="level2">
+<h2 class="anchored" data-anchor-id="transfering-files-to-and-from-the-cluster">Transfering files to and from the cluster</h2>
+<p>Very frequently you will have to upload some file or directory present in your own PC to the cluster, or vice versa: get something that is in the cluster into your own PC. To do so, it is not as simple as grabbing files and moving them around with the mouse, as we are used to doing in the GUIs of our PCs. We need to something a bit more painstaking. The process is pretty much identical whether you want to transfer files to or from the cluster.</p>
+<ol type="1">
+<li>In the terminal in your own computer (i.e.&nbsp;not connected to the cluster), navigate to the directory you want to transfer files to or from. Let’s say I want to move a file named <code>transfer.txt</code> that exists in my remote cluster directory <code>~/my_remote_dir</code> to my local directory <code>~/Documents/my_dir</code>. First, I would need to go to <code>~/Documents/my_dir</code>.</li>
+</ol>
+<p><img src="images/sftp1.png" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>There, we connect to the cluster using <strong>sftp</strong>: <code>sftp abc123@sftp.ku.dk</code>. Once again, it will ask your password and an authentication method.</li>
+</ol>
+<p><img src="images/sftp2.png" class="img-fluid"></p>
+<ol start="3" type="1">
+<li>Now we are once again connected to the cluster. From there, we navigate to the directory were <code>transfer.txt</code> is (in case we want to get the file from the cluster; if we want to put it into the cluster, we navigate to the directory where we want to put the file into). The easiest way to do this is to go to the terminal with our remote connection, typing <code>pwd</code> and pasting it to <code>cd</code>. Once there, we check that our desired file is there</li>
+</ol>
+<p><img src="images/sftp3.png" class="img-fluid"> <img src="images/sftp4.png" class="img-fluid"></p>
+<ol start="4" type="1">
+<li>Now we get the file using <code>get transfer.txt</code>. You will see a confirmation line printed to the screen.</li>
+</ol>
+<ul>
+<li>Note 1: If we had wanted to put the file in the remote cluster, we do <code>put transfer.txt</code>.</li>
+<li>Note 2: We can also transfer whole directories. To do so, we need add the flag <code>-r</code>, e.g.&nbsp;<code>get -r my_remote_dir</code>.</li>
+</ul>
+<p><img src="images/sftp5.png" class="img-fluid"></p>
+<p>Now we can close our connection with sftp. To close connection either with sftp or the cluster itself, we do <code>Ctrl + D</code>.</p>
+</section>
+</section>
+<section id="exercises" class="level1">
+<h1>Exercises</h1>
+<p>I know this can be a lot of information to digest and, by the end of the text, I’m sure you will have forgotten half of it<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Eventually you will learn all of this by heart but, for the time being, I have prepared some treasure hunting-like exercises for you to put all this into practice. Enjoy!</p>
+</section>
+<section id="appendix-1-access-rights" class="level1">
+<h1>Appendix 1: Access rights</h1>
+</section>
+<section id="appendix-2-conda-environments" class="level1">
+<h1>Appendix 2: Conda environments</h1>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Don’t worry if you don’t see the colors, you shouldn’t, it depends on the configuration of your terminal.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>It is good practice to include comments explaining what the command do. We can do this by adding a <code>#</code> at the beginning of the line. The <code>#</code> will indicate that the line is a comment and will not be executed.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Such as —you guessed it— molecular simulations!<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Again, you might not see these colors, but no reason to worry about it.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Best-case scenario, worst-case scenario you never even made it to the end so you are not even reading this.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

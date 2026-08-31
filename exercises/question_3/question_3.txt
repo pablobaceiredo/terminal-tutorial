@@ -1,0 +1,1 @@
+You will find the third word by counting the number of characters in the file 'answer_3.txt'. You then need to translate the number into the corresponding letter in alphabetical position. For example, if the number is 4, your letter would be the 4th letter in the alphabet, i.e. 'D'.

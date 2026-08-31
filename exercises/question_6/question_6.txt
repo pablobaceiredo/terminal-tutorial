@@ -1,0 +1,2 @@
+To get the answer of this question you need to do nothing but run the 'answer_5.sh' code!
+There is a caveat, though: the code will only work once you creat a directory called 'answer_5' within this directory, and inside that directory create a file named 'almost_there.txt'.

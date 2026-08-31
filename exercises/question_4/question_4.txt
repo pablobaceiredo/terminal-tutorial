@@ -1,0 +1,2 @@
+When we want to copy or delete a whole directory, we use a specific flag, i.e. a letter preceded by a dash ('-') next to the command. You have used it to find the answer to question 4, but do you know what it stands for?
+The answer to that question is the meaning of that flag.
