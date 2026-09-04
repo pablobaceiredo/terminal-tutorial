@@ -95,7 +95,7 @@ For example, in my case, the output is:
 
 ![](images/ls.png)
 
-As you can see, there are several other directories inside my home directory (colored in purple ^[Don't worry if you don't see the colors, you shouldn't, it depends on the configuration of your terminal.]). You might have noticed that the output of `ls` is not very informative, because it only shows the names of the files and directories. To modify the behaviour of the `ls` command we can use *options*. For example, if we want to order them by modification time, we use the option `-t`, if we want to show the long listing format (showing size, access rigths, owner, etc. --- more on that later), we can use the option `-l`, and so on and so forth. 
+As you can see, there are several other directories inside my home directory (colored in purple [^1]). You might have noticed that the output of `ls` is not very informative, because it only shows the names of the files and directories. To modify the behaviour of the `ls` command we can use *options*. For example, if we want to order them by modification time, we use the option `-t`, if we want to show the long listing format (showing size, access rigths, owner, etc. --- more on that later), we can use the option `-l`, and so on and so forth. 
 
 ```bash
 ls -t   # order by modification time
@@ -282,7 +282,7 @@ Writing one command at a time is fine for simple tasks, but when we want to perf
 To create a bash script, we can use a text editor (e.g., `nano` or `vim`) to create a new file with the `.sh` extension. The script must:
 
 1. Start with a **shebang line** (`#!/bin/bash`). This line just tells the operating system which interpreter to use to execute the script. If we are using a different language (e.g., Python, R, etc.), we would use a different shebang line (e.g., `#!/usr/bin/env python` for Python).
-2. Contain the **commands** we want to execute, *one per line*^[It is good practice to include comments explaining what the command do. We can do this by adding a `#` at the beginning of the line. The `#` will indicate that the line is a comment and will not be executed.].
+2. Contain the **commands** we want to execute, *one per line*[^2].
 3. **Be made executable** using the `chmod` command. By default, a new file is not executable, so we need to change its permissions to allow execution. To do so, we just use the `chmod` command with the `+x` (*add execute*) option, followed by the name of the script (more on `chmod` and access rights in the [appendix](#appendix-1-access-rights)).
 
 For instance, let's create a simple bash script called `my_script.sh` that prints the current working directory and lists the files in it. I'll use `vi` to create the script, but you can use any text editor you like.
@@ -369,7 +369,7 @@ To solve this problem, we have **remote clusters** (or *servers*). A remote clus
 The brain inside each node can be of 2 different types:
 
 - **CPU** (Central Processing Unit): CPUs can handle very complex tasks that might be done in a sequence (i.e. you cannot do step B until step A finishes). However, they normally don't have a lot of cores, so not many things can be done simultaneously.
-- **GPU** (Graphics Processing Unit): GPUs cannot perform tasks as complex as those performed by CPUs, but they can perform a lot of tasks at the same time because they contain thousands of cores. Therefore, they are great to do the exact same simple operation to millions of data points simultaneously^[Such as ---you guessed it--- molecular simulations!].
+- **GPU** (Graphics Processing Unit): GPUs cannot perform tasks as complex as those performed by CPUs, but they can perform a lot of tasks at the same time because they contain thousands of cores. Therefore, they are great to do the exact same simple operation to millions of data points simultaneously[^3].
 
 We use HPC clusters to do our work for 3 reasons:
 
@@ -398,7 +398,7 @@ Then it will ask you to introduce your password. You will notice that nothing wi
 
 ![](images/hpc1.png)
 
-Once accepted, you will have landed in the **login node**. Note that we can know that we are in a remote cluster by reading the part in blue and green before the current directory (yellow). The blue part is the *username* (it changed to my KU ID) and the part in green is the *hostname* (changed from my device's hostname to the ILF Grid hostname)^[Again, you might not see these colors, but no reason to worry about it.].
+Once accepted, you will have landed in the **login node**. Note that we can know that we are in a remote cluster by reading the part in blue and green before the current directory (yellow). The blue part is the *username* (it changed to my KU ID) and the part in green is the *hostname* (changed from my device's hostname to the ILF Grid hostname)[^4].
 
 ![](images/hpc2.png)
 
@@ -452,7 +452,7 @@ Now we can close our connection with sftp. To close connection either with sftp 
 
 # Exercises
 
-I know this can be a lot of information to digest and, by the end of the text, I'm sure you will have forgotten half of it^[Best-case scenario, worst-case scenario you never even made it to the end so you are not even reading this.]. Eventually you will learn all of this by heart but, for the time being, I have prepared some treasure hunting-like exercises for you to put all this into practice. Enjoy!
+I know this can be a lot of information to digest and, by the end of the text, I'm sure you will have forgotten half of it[^5]. Eventually you will learn all of this by heart but, for the time being, I have prepared some treasure hunting-like exercises for you to put all this into practice. Enjoy!
 
 ## Find the missing word
 
@@ -538,7 +538,7 @@ chmod 644 my_file.txt    # rw-r--r-- : owner can read and write, everyone else c
 chmod 700 secret.txt     # rwx------ : only the owner has any access at all
 ```
 
-In practice, `755` (for scripts and directories) and `644` (for regular files) cover almost everything you will need^[If you ever need something more exotic, this is another perfect question for an LLM.].
+In practice, `755` (for scripts and directories) and `644` (for regular files) cover almost everything you will need[^6].
 
 ### Changing a whole directory at once
 
@@ -639,7 +639,7 @@ The good practice here is to keep `environment.yml` next to your scripts, so tha
 
 ## Using conda inside a batch script
 
-When you submit a job to the cluster with Slurm, there is no one sitting at the terminal to type `conda activate` for you --- the batch script has to do it itself. Because batch scripts do not run as an interactive login shell, we usually need to point the script at conda explicitly before activating^[If `conda activate` fails inside a script with a message about the shell not being configured, this `source` line is almost always the fix. The exact path depends on where conda was installed.]:
+When you submit a job to the cluster with Slurm, there is no one sitting at the terminal to type `conda activate` for you --- the batch script has to do it itself. Because batch scripts do not run as an interactive login shell, we usually need to point the script at conda explicitly before activating[^7]:
 
 ```bash
 #!/bin/bash
@@ -655,3 +655,19 @@ python my_analysis.py
 ## One habit worth keeping
 
 Leave the `base` environment alone and make a **new environment for every project**. Environments are cheap to create and cheap to delete, and keeping them separate is exactly what saves you from the version clashes we started this appendix with.
+
+---
+
+[^1]: Don't worry if you don't see the colors, you shouldn't, it depends on the configuration of your terminal.
+
+[^2]: It is good practice to include comments explaining what the command do. We can do this by adding a `#` at the beginning of the line. The `#` will indicate that the line is a comment and will not be executed.
+
+[^3]: Such as ---you guessed it--- molecular simulations!
+
+[^4]: Again, you might not see these colors, but no reason to worry about it.
+
+[^5]: Best-case scenario, worst-case scenario you never even made it to the end so you are not even reading this.
+
+[^6]: If you ever need something more exotic, this is another perfect question for an LLM.
+
+[^7]: If `conda activate` fails inside a script with a message about the shell not being configured, this `source` line is almost always the fix. The exact path depends on where conda was installed.
