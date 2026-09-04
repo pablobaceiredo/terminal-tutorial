@@ -113,9 +113,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#submitting-jobs" id="toc-submitting-jobs" class="nav-link" data-scroll-target="#submitting-jobs">Submitting jobs</a></li>
   <li><a href="#transfering-files-to-and-from-the-cluster" id="toc-transfering-files-to-and-from-the-cluster" class="nav-link" data-scroll-target="#transfering-files-to-and-from-the-cluster">Transfering files to and from the cluster</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
-  <li><a href="#appendix-1-access-rights" id="toc-appendix-1-access-rights" class="nav-link" data-scroll-target="#appendix-1-access-rights">Appendix 1: Access rights</a></li>
-  <li><a href="#appendix-2-conda-environments" id="toc-appendix-2-conda-environments" class="nav-link" data-scroll-target="#appendix-2-conda-environments">Appendix 2: Conda environments</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a>
+  <ul class="collapse">
+  <li><a href="#find-the-missing-word" id="toc-find-the-missing-word" class="nav-link" data-scroll-target="#find-the-missing-word">Find the missing word</a></li>
+  </ul></li>
+  <li><a href="#appendix-1-access-rights" id="toc-appendix-1-access-rights" class="nav-link" data-scroll-target="#appendix-1-access-rights">Appendix 1: Access rights</a>
+  <ul class="collapse">
+  <li><a href="#who-is-allowed-to-do-what" id="toc-who-is-allowed-to-do-what" class="nav-link" data-scroll-target="#who-is-allowed-to-do-what">Who is allowed to do what</a></li>
+  <li><a href="#changing-permissions-with-chmod" id="toc-changing-permissions-with-chmod" class="nav-link" data-scroll-target="#changing-permissions-with-chmod">Changing permissions with <code>chmod</code></a></li>
+  <li><a href="#why-this-matters" id="toc-why-this-matters" class="nav-link" data-scroll-target="#why-this-matters">Why this matters</a></li>
+  </ul></li>
+  <li><a href="#appendix-2-conda-environments" id="toc-appendix-2-conda-environments" class="nav-link" data-scroll-target="#appendix-2-conda-environments">Appendix 2: Conda environments</a>
+  <ul class="collapse">
+  <li><a href="#the-problem-conda-solves" id="toc-the-problem-conda-solves" class="nav-link" data-scroll-target="#the-problem-conda-solves">The problem conda solves</a></li>
+  <li><a href="#getting-conda" id="toc-getting-conda" class="nav-link" data-scroll-target="#getting-conda">Getting conda</a></li>
+  <li><a href="#creating-and-using-an-environment" id="toc-creating-and-using-an-environment" class="nav-link" data-scroll-target="#creating-and-using-an-environment">Creating and using an environment</a></li>
+  <li><a href="#installing-packages" id="toc-installing-packages" class="nav-link" data-scroll-target="#installing-packages">Installing packages</a></li>
+  <li><a href="#reproducing-an-environment-elsewhere" id="toc-reproducing-an-environment-elsewhere" class="nav-link" data-scroll-target="#reproducing-an-environment-elsewhere">Reproducing an environment elsewhere</a></li>
+  <li><a href="#using-conda-inside-a-batch-script" id="toc-using-conda-inside-a-batch-script" class="nav-link" data-scroll-target="#using-conda-inside-a-batch-script">Using conda inside a batch script</a></li>
+  <li><a href="#one-habit-worth-keeping" id="toc-one-habit-worth-keeping" class="nav-link" data-scroll-target="#one-habit-worth-keeping">One habit worth keeping</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -449,12 +466,146 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="exercises" class="level1">
 <h1>Exercises</h1>
 <p>I know this can be a lot of information to digest and, by the end of the text, I’m sure you will have forgotten half of it<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. Eventually you will learn all of this by heart but, for the time being, I have prepared some treasure hunting-like exercises for you to put all this into practice. Enjoy!</p>
+<section id="find-the-missing-word" class="level2">
+<h2 class="anchored" data-anchor-id="find-the-missing-word">Find the missing word</h2>
+<p>The objective of this exercise is to find the hidden 6-letter word. To find it, you just need to join the initial letters of 6 words or concepts that we have worked with. How do you find these 6 words?</p>
+<p>In the <code>exercises</code> directory you will find 6 directories named <code>question_1</code>, <code>question_2</code> and so on. Inside each of those there is a file named <code>question_1.txt</code>, <code>question_2.txt</code>, etc. containing the question that will tell you how to find the 6 words.</p>
+<p>Navigate through these using only terminal commands. What is the hidden 6-letter word?</p>
+</section>
 </section>
 <section id="appendix-1-access-rights" class="level1">
 <h1>Appendix 1: Access rights</h1>
+<p>Back in the <a href="#writing-and-executing-scripts">scripts section</a>, we had to run <code>chmod +x my_script.sh</code> before we could execute our script, and I promised we would explain it later. Later is now.</p>
+<section id="who-is-allowed-to-do-what" class="level2">
+<h2 class="anchored" data-anchor-id="who-is-allowed-to-do-what">Who is allowed to do what</h2>
+<p>Every file and every directory in the system carries a set of <em>permissions</em> (also called <em>access rights</em>) that decide <strong>who</strong> can do <strong>what</strong> with it. We can see these permissions with the long listing format of <code>ls</code> that we mentioned earlier:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The output looks something like this:</p>
+<pre><code>-rwxr-xr-x  1 pablo  staff    45  Sep  4 12:00  my_script.sh
+-rw-r--r--  1 pablo  staff   128  Sep  4 12:00  my_file.txt
+drwxr-xr-x  2 pablo  staff    64  Sep  4 12:00  my_dir</code></pre>
+<p>The part we care about now is the <strong>first column</strong>, that block of 10 characters (e.g.&nbsp;<code>-rwxr-xr-x</code>). Let’s break it down.</p>
+<ul>
+<li><strong>Character 1</strong> tells us the <em>type</em> of the item: <code>-</code> is a regular file, <code>d</code> is a directory, and <code>l</code> is a symbolic link (a shortcut to another file).</li>
+<li><strong>Characters 2–4</strong> are the permissions for the <strong>owner</strong> (the user who owns the file, usually the person who created it).</li>
+<li><strong>Characters 5–7</strong> are the permissions for the <strong>group</strong> (a set of users that the system groups together).</li>
+<li><strong>Characters 8–10</strong> are the permissions for <strong>others</strong> (everybody else with access to the machine).</li>
+</ul>
+<p>Each of those three blocks is always written in the same order, <code>rwx</code>, and each letter means:</p>
+<ul>
+<li><code>r</code> (<em>read</em>): you can look at the contents of the file, or list the contents of a directory with <code>ls</code>.</li>
+<li><code>w</code> (<em>write</em>): you can modify the file, or create and delete files inside a directory.</li>
+<li><code>x</code> (<em>execute</em>): you can run the file as a program, or enter a directory with <code>cd</code>.</li>
+</ul>
+<p>When a permission is <strong>not</strong> granted, its letter is replaced by a dash (<code>-</code>). So, reading <code>-rwxr-xr-x</code> from left to right: it is a regular file (<code>-</code>); the owner can read, write and execute it (<code>rwx</code>); the group can read and execute it, but not modify it (<code>r-x</code>); and others can also read and execute it (<code>r-x</code>).</p>
+<p>That is exactly why a fresh script does not run: it is created as <code>-rw-r--r--</code>, with no <code>x</code> anywhere, so the system refuses to execute it and complains with <code>Permission denied</code>.</p>
+</section>
+<section id="changing-permissions-with-chmod" class="level2">
+<h2 class="anchored" data-anchor-id="changing-permissions-with-chmod">Changing permissions with <code>chmod</code></h2>
+<p>To change these permissions we use the <code>chmod</code> command (which stands for <em>change mode</em>). There are two ways to tell <code>chmod</code> what we want: the <em>symbolic</em> way and the <em>numeric</em> way.</p>
+<section id="the-symbolic-way" class="level3">
+<h3 class="anchored" data-anchor-id="the-symbolic-way">The symbolic way</h3>
+<p>The symbolic syntax reads almost like a sentence: <code>chmod [who][operator][permissions] file</code>.</p>
+<ul>
+<li><strong>who</strong>: <code>u</code> for the owner (user), <code>g</code> for the group, <code>o</code> for others, and <code>a</code> for all of them at once.</li>
+<li><strong>operator</strong>: <code>+</code> to add a permission, <code>-</code> to remove it, <code>=</code> to set it exactly (and clear the rest).</li>
+<li><strong>permissions</strong>: any combination of <code>r</code>, <code>w</code>, <code>x</code>.</li>
+</ul>
+<p>Some examples:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x my_script.sh        <span class="co"># add execute permission for everyone</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u+x my_script.sh       <span class="co"># add execute permission only for the owner</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> go-w my_file.txt       <span class="co"># remove write permission from group and others</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> u=rw,go=r my_file.txt  <span class="co"># owner can read and write; group and others can only read</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When we wrote <code>chmod +x my_script.sh</code> in the scripts section, we were simply adding the execute permission to the file.</p>
+</section>
+<section id="the-numeric-way" class="level3">
+<h3 class="anchored" data-anchor-id="the-numeric-way">The numeric way</h3>
+<p>You will very often see permissions written as a three-digit number, like <code>chmod 755</code>. This works because each of the three blocks (owner, group, others) can be represented by a single digit, obtained by adding up:</p>
+<ul>
+<li><code>r</code> (read) = <strong>4</strong></li>
+<li><code>w</code> (write) = <strong>2</strong></li>
+<li><code>x</code> (execute) = <strong>1</strong></li>
+</ul>
+<p>So <code>rwx</code> is <code>4 + 2 + 1 = 7</code>, <code>rw-</code> is <code>4 + 2 = 6</code>, <code>r-x</code> is <code>4 + 1 = 5</code>, and <code>r--</code> is just <code>4</code>. We then write one digit per block, in the usual order owner-group-others:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 755 my_script.sh   <span class="co"># rwxr-xr-x : owner can do everything, everyone else can read and execute</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 644 my_file.txt    <span class="co"># rw-r--r-- : owner can read and write, everyone else can only read</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 700 secret.txt     <span class="co"># rwx------ : only the owner has any access at all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In practice, <code>755</code> (for scripts and directories) and <code>644</code> (for regular files) cover almost everything you will need<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+</section>
+<section id="changing-a-whole-directory-at-once" class="level3">
+<h3 class="anchored" data-anchor-id="changing-a-whole-directory-at-once">Changing a whole directory at once</h3>
+<p>Just like with <code>cp</code> and <code>rm</code>, we can use the <code>-R</code> (<em>recursive</em>) option to apply a change to a directory and everything inside it:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> <span class="at">-R</span> 755 my_dir</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>As always with recursive commands, double-check the directory name before pressing Enter.</p>
+</section>
+</section>
+<section id="why-this-matters" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-matters">Why this matters</h2>
+<p>On your own PC you are usually the only user, so permissions rarely get in your way. But the moment you start working on the <strong>remote cluster</strong>, you are sharing the machine with many other people. Permissions are what stop a stranger from reading your data or editing your scripts — and, occasionally, what stop <em>you</em> from running a script until you remember to add that <code>x</code>.</p>
+</section>
 </section>
 <section id="appendix-2-conda-environments" class="level1">
 <h1>Appendix 2: Conda environments</h1>
+<p>In the <a href="#python-scripts">Python scripts section</a> we described a conda environment as a self-contained ‘toolbox’ holding a specific version of Python and a specific set of packages. Here we will actually build and use one.</p>
+<section id="the-problem-conda-solves" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem-conda-solves">The problem conda solves</h2>
+<p>Imagine you have two projects. Project A was written two years ago and needs Python 3.9 and an old version of <code>pandas</code>. Project B is brand new and needs Python 3.11 and the latest <code>pandas</code>. If you install everything system-wide, the two versions collide and at least one of the projects breaks.</p>
+<p>A <strong>conda environment</strong> solves this by giving each project its own isolated directory with its own Python and its own packages. Switching projects becomes as simple as switching environments, and nothing you do in one environment can disturb another.</p>
+</section>
+<section id="getting-conda" class="level2">
+<h2 class="anchored" data-anchor-id="getting-conda">Getting conda</h2>
+<p>Conda comes in two flavours: <strong>Anaconda</strong> (huge, ships with hundreds of packages) and <strong>Miniconda</strong> (tiny, ships with just conda itself and you add what you need). For our purposes Miniconda is more than enough.</p>
+<ul>
+<li>On <strong>your own PC</strong>, download and install Miniconda from its website.</li>
+<li>On the <strong>ILF Grid</strong>, conda is usually already available — check the <a href="https://biowiki.sund.ku.dk/wiki/Main_Page">ILF Grid Wiki</a> for the exact way to load it, as it may be provided as a module.</li>
+</ul>
+</section>
+<section id="creating-and-using-an-environment" class="level2">
+<h2 class="anchored" data-anchor-id="creating-and-using-an-environment">Creating and using an environment</h2>
+<p>To <strong>create</strong> a new environment, we use <code>conda create</code>, give it a name with <code>--name</code>, and (optionally) state which Python version we want:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">--name</span> myenv python=3.11</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To start using it, we <strong>activate</strong> it:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate myenv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You will notice that your prompt now starts with <code>(myenv)</code>. That little label is your reminder of which toolbox is currently open: from now on, <code>python</code> and <code>pip</code> refer to the ones <em>inside</em> <code>myenv</code>.</p>
+<p>When you are done, you <strong>deactivate</strong> it to go back to the default (<code>base</code>) environment:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> deactivate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="installing-packages" class="level2">
+<h2 class="anchored" data-anchor-id="installing-packages">Installing packages</h2>
+<p>With the environment active, we install packages with <code>conda install</code>:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install numpy pandas matplotlib</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Sometimes a package is not in the default repository and lives in a different <em>channel</em> (a repository of packages). The most important community channel is <code>conda-forge</code>, and we select it with the <code>-c</code> option:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> install <span class="at">-c</span> conda-forge mdanalysis</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A couple of commands to keep track of what you have:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env list   <span class="co"># list all your environments</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> list       <span class="co"># list the packages installed in the active environment</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>And to <strong>delete</strong> an environment you no longer need:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> remove <span class="at">--name</span> myenv <span class="at">--all</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="reproducing-an-environment-elsewhere" class="level2">
+<h2 class="anchored" data-anchor-id="reproducing-an-environment-elsewhere">Reproducing an environment elsewhere</h2>
+<p>Remember the <strong>reproducibility</strong> argument from the very beginning of the tutorial? Environments have their own version of it. You can <em>export</em> the full recipe of the active environment to a file, conventionally named <code>environment.yml</code>:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env export <span class="op">&gt;</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Anyone (including future you, or you on the cluster) can then rebuild the exact same toolbox with:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-f</span> environment.yml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The good practice here is to keep <code>environment.yml</code> next to your scripts, so that the code and the tools it needs always travel together.</p>
+</section>
+<section id="using-conda-inside-a-batch-script" class="level2">
+<h2 class="anchored" data-anchor-id="using-conda-inside-a-batch-script">Using conda inside a batch script</h2>
+<p>When you submit a job to the cluster with Slurm, there is no one sitting at the terminal to type <code>conda activate</code> for you — the batch script has to do it itself. Because batch scripts do not run as an interactive login shell, we usually need to point the script at conda explicitly before activating<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH --job-name=my_analysis</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co">#SBATCH ...   # rest of the header</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/miniconda3/etc/profile.d/conda.sh</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate myenv</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> my_analysis.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="one-habit-worth-keeping" class="level2">
+<h2 class="anchored" data-anchor-id="one-habit-worth-keeping">One habit worth keeping</h2>
+<p>Leave the <code>base</code> environment alone and make a <strong>new environment for every project</strong>. Environments are cheap to create and cheap to delete, and keeping them separate is exactly what saves you from the version clashes we started this appendix with.</p>
+</section>
 </section>
 
 
@@ -466,6 +617,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li id="fn3"><p>Such as —you guessed it— molecular simulations!<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Again, you might not see these colors, but no reason to worry about it.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Best-case scenario, worst-case scenario you never even made it to the end so you are not even reading this.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>If you ever need something more exotic, this is another perfect question for an LLM.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>If <code>conda activate</code> fails inside a script with a message about the shell not being configured, this <code>source</code> line is almost always the fix. The exact path depends on where conda was installed.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section></div></main>
 <!-- /main column -->
