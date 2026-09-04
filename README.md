@@ -1,6 +1,7 @@
 # Working from the terminal 101
 ## Author: Pablo Baceiredo Macho
 
+
 In this tutorial, we will learn how to use the terminal to interact with the computer. We will cover the following topics:
 
 1. [What is the terminal and why do we use it](#what-is-the-terminal-and-why-do-we-use-it)
@@ -456,5 +457,194 @@ Navigate through these using only terminal commands. What is the hidden 6-letter
 
 # Appendix 1: Access rights
 
+Back in the [scripts section](#writing-and-executing-scripts), we had to run `chmod +x my_script.sh` before we could execute our script, and I promised we would explain it later. Later is now.
+
+## Who is allowed to do what
+
+Every file and every directory in the system carries a set of *permissions* (also called *access rights*) that decide **who** can do **what** with it. We can see these permissions with the long listing format of `ls` that we mentioned earlier:
+
+```bash
+ls -l
+```
+
+The output looks something like this:
+
+```
+-rwxr-xr-x  1 pablo  staff    45  Sep  4 12:00  my_script.sh
+-rw-r--r--  1 pablo  staff   128  Sep  4 12:00  my_file.txt
+drwxr-xr-x  2 pablo  staff    64  Sep  4 12:00  my_dir
+```
+
+The part we care about now is the **first column**, that block of 10 characters (e.g. `-rwxr-xr-x`). Let's break it down.
+
+- **Character 1** tells us the *type* of the item: `-` is a regular file, `d` is a directory, and `l` is a symbolic link (a shortcut to another file).
+- **Characters 2--4** are the permissions for the **owner** (the user who owns the file, usually the person who created it).
+- **Characters 5--7** are the permissions for the **group** (a set of users that the system groups together).
+- **Characters 8--10** are the permissions for **others** (everybody else with access to the machine).
+
+Each of those three blocks is always written in the same order, `rwx`, and each letter means:
+
+- `r` (*read*): you can look at the contents of the file, or list the contents of a directory with `ls`.
+- `w` (*write*): you can modify the file, or create and delete files inside a directory.
+- `x` (*execute*): you can run the file as a program, or enter a directory with `cd`.
+
+When a permission is **not** granted, its letter is replaced by a dash (`-`). So, reading `-rwxr-xr-x` from left to right: it is a regular file (`-`); the owner can read, write and execute it (`rwx`); the group can read and execute it, but not modify it (`r-x`); and others can also read and execute it (`r-x`).
+
+That is exactly why a fresh script does not run: it is created as `-rw-r--r--`, with no `x` anywhere, so the system refuses to execute it and complains with `Permission denied`.
+
+## Changing permissions with `chmod`
+
+To change these permissions we use the `chmod` command (which stands for *change mode*). There are two ways to tell `chmod` what we want: the *symbolic* way and the *numeric* way.
+
+### The symbolic way
+
+The symbolic syntax reads almost like a sentence: `chmod [who][operator][permissions] file`.
+
+- **who**: `u` for the owner (user), `g` for the group, `o` for others, and `a` for all of them at once.
+- **operator**: `+` to add a permission, `-` to remove it, `=` to set it exactly (and clear the rest).
+- **permissions**: any combination of `r`, `w`, `x`.
+
+Some examples:
+
+```bash
+chmod +x my_script.sh        # add execute permission for everyone
+chmod u+x my_script.sh       # add execute permission only for the owner
+chmod go-w my_file.txt       # remove write permission from group and others
+chmod u=rw,go=r my_file.txt  # owner can read and write; group and others can only read
+```
+
+When we wrote `chmod +x my_script.sh` in the scripts section, we were simply adding the execute permission to the file.
+
+### The numeric way
+
+You will very often see permissions written as a three-digit number, like `chmod 755`. This works because each of the three blocks (owner, group, others) can be represented by a single digit, obtained by adding up:
+
+- `r` (read) = **4**
+- `w` (write) = **2**
+- `x` (execute) = **1**
+
+So `rwx` is `4 + 2 + 1 = 7`, `rw-` is `4 + 2 = 6`, `r-x` is `4 + 1 = 5`, and `r--` is just `4`. We then write one digit per block, in the usual order owner-group-others:
+
+```bash
+chmod 755 my_script.sh   # rwxr-xr-x : owner can do everything, everyone else can read and execute
+chmod 644 my_file.txt    # rw-r--r-- : owner can read and write, everyone else can only read
+chmod 700 secret.txt     # rwx------ : only the owner has any access at all
+```
+
+In practice, `755` (for scripts and directories) and `644` (for regular files) cover almost everything you will need^[If you ever need something more exotic, this is another perfect question for an LLM.].
+
+### Changing a whole directory at once
+
+Just like with `cp` and `rm`, we can use the `-R` (*recursive*) option to apply a change to a directory and everything inside it:
+
+```bash
+chmod -R 755 my_dir
+```
+
+As always with recursive commands, double-check the directory name before pressing Enter.
+
+## Why this matters
+
+On your own PC you are usually the only user, so permissions rarely get in your way. But the moment you start working on the **remote cluster**, you are sharing the machine with many other people. Permissions are what stop a stranger from reading your data or editing your scripts --- and, occasionally, what stop *you* from running a script until you remember to add that `x`.
+
 
 # Appendix 2: Conda environments
+
+In the [Python scripts section](#python-scripts) we described a conda environment as a self-contained 'toolbox' holding a specific version of Python and a specific set of packages. Here we will actually build and use one.
+
+## The problem conda solves
+
+Imagine you have two projects. Project A was written two years ago and needs Python 3.9 and an old version of `pandas`. Project B is brand new and needs Python 3.11 and the latest `pandas`. If you install everything system-wide, the two versions collide and at least one of the projects breaks.
+
+A **conda environment** solves this by giving each project its own isolated directory with its own Python and its own packages. Switching projects becomes as simple as switching environments, and nothing you do in one environment can disturb another.
+
+## Getting conda
+
+Conda comes in two flavours: **Anaconda** (huge, ships with hundreds of packages) and **Miniconda** (tiny, ships with just conda itself and you add what you need). For our purposes Miniconda is more than enough.
+
+- On **your own PC**, download and install Miniconda from its website.
+- On the **ILF Grid**, conda is usually already available --- check the [ILF Grid Wiki](https://biowiki.sund.ku.dk/wiki/Main_Page) for the exact way to load it, as it may be provided as a module.
+
+## Creating and using an environment
+
+To **create** a new environment, we use `conda create`, give it a name with `--name`, and (optionally) state which Python version we want:
+
+```bash
+conda create --name myenv python=3.11
+```
+
+To start using it, we **activate** it:
+
+```bash
+conda activate myenv
+```
+
+You will notice that your prompt now starts with `(myenv)`. That little label is your reminder of which toolbox is currently open: from now on, `python` and `pip` refer to the ones *inside* `myenv`.
+
+When you are done, you **deactivate** it to go back to the default (`base`) environment:
+
+```bash
+conda deactivate
+```
+
+## Installing packages
+
+With the environment active, we install packages with `conda install`:
+
+```bash
+conda install numpy pandas matplotlib
+```
+
+Sometimes a package is not in the default repository and lives in a different *channel* (a repository of packages). The most important community channel is `conda-forge`, and we select it with the `-c` option:
+
+```bash
+conda install -c conda-forge mdanalysis
+```
+
+A couple of commands to keep track of what you have:
+
+```bash
+conda env list   # list all your environments
+conda list       # list the packages installed in the active environment
+```
+
+And to **delete** an environment you no longer need:
+
+```bash
+conda remove --name myenv --all
+```
+
+## Reproducing an environment elsewhere
+
+Remember the **reproducibility** argument from the very beginning of the tutorial? Environments have their own version of it. You can *export* the full recipe of the active environment to a file, conventionally named `environment.yml`:
+
+```bash
+conda env export > environment.yml
+```
+
+Anyone (including future you, or you on the cluster) can then rebuild the exact same toolbox with:
+
+```bash
+conda env create -f environment.yml
+```
+
+The good practice here is to keep `environment.yml` next to your scripts, so that the code and the tools it needs always travel together.
+
+## Using conda inside a batch script
+
+When you submit a job to the cluster with Slurm, there is no one sitting at the terminal to type `conda activate` for you --- the batch script has to do it itself. Because batch scripts do not run as an interactive login shell, we usually need to point the script at conda explicitly before activating^[If `conda activate` fails inside a script with a message about the shell not being configured, this `source` line is almost always the fix. The exact path depends on where conda was installed.]:
+
+```bash
+#!/bin/bash
+#SBATCH --job-name=my_analysis
+#SBATCH ...   # rest of the header
+
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate myenv
+
+python my_analysis.py
+```
+
+## One habit worth keeping
+
+Leave the `base` environment alone and make a **new environment for every project**. Environments are cheap to create and cheap to delete, and keeping them separate is exactly what saves you from the version clashes we started this appendix with.
